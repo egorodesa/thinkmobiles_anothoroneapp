@@ -7,7 +7,7 @@
     <tr>
       <th>Title</th>
       <th>Description</th>
-      <th colspan="3"></th>
+      <th>Price</th>
     </tr>
   </thead>
 
@@ -16,6 +16,7 @@
       <tr>
         <td><%= car.title %></td>
         <td><%= car.description %></td>
+        <td><%= car.price.format %></td>
         <td><%= link_to 'Show', car %></td>
         <td><%= link_to 'Edit', edit_car_path(car) %></td>
         <td><%= link_to 'Destroy', car, method: :delete, data: { confirm: 'Are you sure?' } %></td>
