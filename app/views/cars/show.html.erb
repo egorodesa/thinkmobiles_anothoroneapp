@@ -4,7 +4,11 @@
   <strong>Title:</strong>
   <%= @car.title %>
 </p>
-
+<p>
+        <% @car.car_images.each do |f| %>
+          <%= image_tag f.photo.url(:medium) %>
+        <% end %>
+</p>
 <p>
   <strong>Description:</strong>
   <%= @car.description %>

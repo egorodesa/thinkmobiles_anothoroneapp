@@ -39,7 +39,7 @@ group :development, :test do
   gem 'money-rails'
 
   gem 'google_currency'
-  gem "paperclip"
+  gem 'paperclip'
 end
 
 group :development do
