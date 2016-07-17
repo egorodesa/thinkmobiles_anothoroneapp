@@ -40,6 +40,10 @@ group :development, :test do
 
   gem 'google_currency'
   gem 'paperclip'
+  gem 'sidekiq'
+  gem 'sidekiq-cron'
+  gem 'pry'
+  gem "paperclip-dropbox"
 end
 
 group :development do

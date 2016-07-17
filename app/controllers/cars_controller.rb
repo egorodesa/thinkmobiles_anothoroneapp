@@ -24,8 +24,31 @@ class CarsController < ApplicationController
   # POST /cars
   # POST /cars.json
   def create
-    @car = Car.new(car_params)
+    @car = Car.create(car_params.except(:car_images_attributes))
+    original_file = car_params['car_images_attributes']['0']['photo']
+# binding.pry
+    directory_name = "/tmp/image_queue"
+    Dir.mkdir(directory_name) unless File.exists?(directory_name)
 
+    path = "/tmp/image_queue/#{original_file.original_filename.split('.')[0] + CarImage.count.to_s}#{File.extname(original_file.original_filename)}"
+# binding.pry
+    f = File.new path, "wb"
+    f.binmode
+    bin = original_file.read()
+    f.write(bin)
+    f.flush
+
+    @picture = CarImage.new(temp_file_path: path)
+    # @picture.car_id = @car.id
+    @picture.save
+
+# binding.pry
+    # FastImageUploadJob.perform_later(@picture.id,@car.id)
+    UploadfileWorker.perform_in(2.seconds,@picture.id,@car.id)
+
+    # respond_with(@picture)
+
+# binding.pry
     respond_to do |format|
       if @car.save
         format.html { redirect_to @car, notice: 'Car was successfully created.' }
@@ -69,7 +92,7 @@ class CarsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def car_params
-      params.require(:car).permit(:title, :description, :price, :price_currency,:car_images, :photo,
+      params.require(:car).permit(:title, :description, :price, :price_currency,
                                   car_images_attributes: [:photo])
     end
 end
